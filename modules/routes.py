@@ -1,4 +1,5 @@
 import random
+from typing import Union
 
 from loguru import logger
 from utils.sleeping import sleep
@@ -6,8 +7,10 @@ from .account import Account
 
 
 class Routes(Account):
-    def __init__(self, account_id: int, private_key: str) -> None:
-        super().__init__(account_id=account_id, private_key=private_key, chain="scroll")
+    def __init__(self, account_id: int, private_key: str, proxy: Union[None, str]) -> None:
+        super().__init__(account_id=account_id, private_key=private_key, chain="scroll", proxy=proxy)
+
+        self.proxy = proxy
 
     def process_module(self, module):
         if isinstance(module, list):
@@ -40,6 +43,6 @@ class Routes(Account):
                 logger.info(f"[{self.account_id}][{self.address}] Skip module")
                 continue
 
-            await module(self.account_id, self.private_key)
+            await module(self.account_id, self.private_key, self.proxy)
 
             await sleep(sleep_from, sleep_to)

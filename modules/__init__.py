@@ -5,6 +5,7 @@ from .layerswap import LayerSwap
 from .skydrome import Skydrome
 from .zebra import Zebra
 from .syncswap import SyncSwap
+from .spacefi import SpaceFi
 from .layerbank import LayerBank
 from .rocketsam import RocketSam
 from .zerius import Zerius

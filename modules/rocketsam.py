@@ -10,8 +10,8 @@ from .account import Account
 
 
 class RocketSam(Account):
-    def __init__(self, account_id: int, private_key: str) -> None:
-        super().__init__(account_id=account_id, private_key=private_key, chain="scroll")
+    def __init__(self, account_id: int, private_key: str, proxy: Union[None, str]) -> None:
+        super().__init__(account_id=account_id, private_key=private_key, chain="scroll", proxy=proxy)
 
     async def get_deposit_amount(self, contract: str):
         contract = self.get_contract(self.w3.to_checksum_address(contract), ROCKETSAM_ABI)

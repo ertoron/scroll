@@ -8,9 +8,10 @@ from utils.sleeping import sleep
 
 
 class SwapTokens(Account):
-    def __init__(self, account_id: int, private_key: str) -> None:
-        super().__init__(account_id=account_id, private_key=private_key, chain="scroll")
+    def __init__(self, account_id: int, private_key: str, proxy: Union[None, str]) -> None:
+        super().__init__(account_id=account_id, private_key=private_key, chain="scroll", proxy=proxy)
 
+        self.proxy = proxy
         self.swap_modules = {
             "syncswap": SyncSwap,
             "skydrome": Skydrome,
@@ -42,7 +43,7 @@ class SwapTokens(Account):
             balance = await self.get_balance(SCROLL_TOKENS[token])
 
             if balance["balance_wei"] > 0:
-                swap_module = self.get_swap_module(use_dex)(self.account_id, self.private_key)
+                swap_module = self.get_swap_module(use_dex)(self.account_id, self.private_key, self.proxy)
                 await swap_module.swap(
                     token,
                     "ETH",

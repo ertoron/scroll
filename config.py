@@ -9,6 +9,9 @@ with open('data/abi/erc20_abi.json') as file:
 with open("accounts.txt", "r") as file:
     ACCOUNTS = [row.strip() for row in file]
 
+with open("proxy.txt", "r") as file:
+    PROXIES = [row.strip() for row in file]    
+
 with open('data/abi/bridge/deposit.json') as file:
     DEPOSIT_ABI = json.load(file)
 
@@ -20,6 +23,9 @@ with open('data/abi/bridge/oracle.json') as file:
 
 with open('data/abi/scroll/weth.json') as file:
     WETH_ABI = json.load(file)
+
+with open("data/abi/spacefi/router.json", "r") as file:
+    SPACEFI_ROUTER_ABI = json.load(file)
 
 with open("data/abi/syncswap/router.json", "r") as file:
     SYNCSWAP_ROUTER_ABI = json.load(file)
@@ -88,6 +94,10 @@ SCROLL_TOKENS = {
 SYNCSWAP_CONTRACTS = {
     "router": "0x80e38291e06339d10aab483c65695d004dbd5c69",
     "classic_pool": "0x37BAc764494c8db4e54BDE72f6965beA9fa0AC2d"
+}
+
+SPACEFI_CONTRACTS = {
+    "router": "0x18b71386418a9fca5ae7165e31c385a5130011b6"
 }
 
 SKYDROME_CONTRACTS = {

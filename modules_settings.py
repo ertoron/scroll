@@ -2,7 +2,7 @@ import asyncio
 from modules import *
 
 
-async def deposit_scroll(account_id, key):
+async def deposit_scroll(account_id, key, proxy):
     """
     Deposit from official bridge
     ______________________________________________________
@@ -18,11 +18,11 @@ async def deposit_scroll(account_id, key):
     min_percent = 1
     max_percent = 1
 
-    scroll = Scroll(account_id, key, "ethereum")
+    scroll = Scroll(account_id, key, "ethereum", proxy)
     await scroll.deposit(min_amount, max_amount, decimal, all_amount, min_percent, max_percent)
 
 
-async def withdraw_scroll(account_id, key):
+async def withdraw_scroll(account_id, key, proxy):
     """
     Withdraw from official bridge
     ______________________________________________________
@@ -38,11 +38,11 @@ async def withdraw_scroll(account_id, key):
     min_percent = 10
     max_percent = 10
 
-    scroll = Scroll(account_id, key, "scroll")
+    scroll = Scroll(account_id, key, "scroll", proxy)
     await scroll.withdraw(min_amount, max_amount, decimal, all_amount, min_percent, max_percent)
 
 
-async def bridge_orbiter(account_id, key):
+async def bridge_orbiter(account_id, key, proxy):
     """
     Bridge from orbiter
     ______________________________________________________
@@ -62,11 +62,11 @@ async def bridge_orbiter(account_id, key):
     min_percent = 5
     max_percent = 10
 
-    orbiter = Orbiter(account_id, key, from_chain)
+    orbiter = Orbiter(account_id, key, from_chain, proxy)
     await orbiter.bridge(to_chain, min_amount, max_amount, decimal, all_amount, min_percent, max_percent)
 
 
-async def bridge_layerswap(account_id, key):
+async def bridge_layerswap(account_id, key, proxy):
     """
     Bridge from Layerswap
     ______________________________________________________
@@ -91,13 +91,13 @@ async def bridge_layerswap(account_id, key):
     min_percent = 5
     max_percent = 5
 
-    layerswap = LayerSwap(account_id=account_id, private_key=key, chain=from_chain)
+    layerswap = LayerSwap(account_id=account_id, private_key=key, chain=from_chain, proxy=proxy)
     await layerswap.bridge(
         from_chain, to_chain, min_amount, max_amount, decimal, all_amount, min_percent, max_percent
     )
 
 
-async def wrap_eth(account_id, key):
+async def wrap_eth(account_id, key, proxy):
     """
     Wrap ETH
     ______________________________________________________
@@ -113,11 +113,11 @@ async def wrap_eth(account_id, key):
     min_percent = 5
     max_percent = 10
 
-    scroll = Scroll(account_id, key, "scroll")
+    scroll = Scroll(account_id, key, "scroll", proxy)
     await scroll.wrap_eth(min_amount, max_amount, decimal, all_amount, min_percent, max_percent)
 
 
-async def unwrap_eth(account_id, key):
+async def unwrap_eth(account_id, key, proxy):
     """
     Unwrap ETH
     ______________________________________________________
@@ -133,11 +133,11 @@ async def unwrap_eth(account_id, key):
     min_percent = 100
     max_percent = 100
 
-    scroll = Scroll(account_id, key, "scroll")
+    scroll = Scroll(account_id, key, "scroll", proxy)
     await scroll.unwrap_eth(min_amount, max_amount, decimal, all_amount, min_percent, max_percent)
 
 
-async def swap_skydrome(account_id, key):
+async def swap_skydrome(account_id, key, proxy):
     """
     Make swap on Skydrome
     ______________________________________________________
@@ -162,13 +162,13 @@ async def swap_skydrome(account_id, key):
     min_percent = 100
     max_percent = 100
 
-    skydrome = Skydrome(account_id, key)
+    skydrome = Skydrome(account_id, key, proxy)
     await skydrome.swap(
         from_token, to_token, min_amount, max_amount, decimal, slippage, all_amount, min_percent, max_percent
     )
 
 
-async def swap_zebra(account_id, key):
+async def swap_zebra(account_id, key, proxy):
     """
     Make swap on Zebra
     ______________________________________________________
@@ -193,13 +193,13 @@ async def swap_zebra(account_id, key):
     min_percent = 100
     max_percent = 100
 
-    zebra = Zebra(account_id, key)
+    zebra = Zebra(account_id, key, proxy)
     await zebra.swap(
         from_token, to_token, min_amount, max_amount, decimal, slippage, all_amount, min_percent, max_percent
     )
 
 
-async def swap_syncswap(account_id, key):
+async def swap_syncswap(account_id, key, proxy):
     """
     Make swap on SyncSwap
 
@@ -224,13 +224,42 @@ async def swap_syncswap(account_id, key):
     min_percent = 100
     max_percent = 100
 
-    syncswap = SyncSwap(account_id, key)
+    syncswap = SyncSwap(account_id, key, proxy)
     await syncswap.swap(
         from_token, to_token, min_amount, max_amount, decimal, slippage, all_amount, min_percent, max_percent
     )
 
+async def swap_spacefi(account_id, key, proxy):
+    """
+    Make swap on SpaceFi
+    ______________________________________________________
+    from_token – Choose SOURCE token ETH, USDC, USDT, BUSD, OT, MATIC, WBTC | Select one
+    to_token – Choose DESTINATION token ETH, USDC, USDT, BUSD, OT, MATIC, WBTC | Select one
 
-async def deposit_layerbank(account_id, key):
+    Disclaimer - You can swap only ETH to any token or any token to ETH!
+    ______________________________________________________
+    all_amount - swap from min_percent to max_percent
+    """
+
+    from_token = "ETH"
+    to_token = "USDC"
+
+    min_amount = 0.0001
+    max_amount = 0.0002
+    decimal = 6
+    slippage = 1
+
+    all_amount = True
+
+    min_percent = 10
+    max_percent = 30
+
+    spacefi = SpaceFi(account_id, key, proxy)
+    await spacefi.swap(from_token, to_token, min_amount, max_amount, decimal, slippage, all_amount, min_percent,
+                       max_percent)
+
+
+async def deposit_layerbank(account_id, key, proxy):
     """
     Make deposit on LayerBank
     ______________________________________________________
@@ -252,13 +281,13 @@ async def deposit_layerbank(account_id, key):
     min_percent = 5
     max_percent = 10
 
-    layerbank = LayerBank(account_id, key)
+    layerbank = LayerBank(account_id, key, proxy)
     await layerbank.deposit(
         min_amount, max_amount, decimal, sleep_from, sleep_to, make_withdraw, all_amount, min_percent, max_percent
     )
 
 
-async def deposit_rocketsam(account_id, key):
+async def deposit_rocketsam(account_id, key, proxy):
     """
     Make deposit on RocketSam
     ______________________________________________________
@@ -293,14 +322,14 @@ async def deposit_rocketsam(account_id, key):
     min_percent = 1
     max_percent = 1
 
-    rocketsam = RocketSam(account_id, key)
+    rocketsam = RocketSam(account_id, key, proxy)
     await rocketsam.deposit(
         contracts, min_amount, max_amount, decimal, sleep_from, sleep_to,
         make_withdraw, all_amount, min_percent, max_percent
     )
 
 
-async def withdraw_rocketsam(account_id, key):
+async def withdraw_rocketsam(account_id, key, proxy):
     """
     Make withdraw from RocketSam
     """
@@ -320,11 +349,11 @@ async def withdraw_rocketsam(account_id, key):
     sleep_from = 10
     sleep_to = 30
 
-    rocketsam = RocketSam(account_id, key)
+    rocketsam = RocketSam(account_id, key, proxy)
     await rocketsam.withdraw(contracts, sleep_from, sleep_to)
 
 
-async def mint_zerius(account_id, key):
+async def mint_zerius(account_id, key, proxy):
     """
     Mint + bridge Zerius NFT
     ______________________________________________________
@@ -337,24 +366,26 @@ async def mint_zerius(account_id, key):
     sleep_from = 10
     sleep_to = 20
 
-    zerius = Zerius(account_id, key)
+    zerius = Zerius(account_id, key, proxy)
     await zerius.bridge(chains, sleep_from, sleep_to)
 
 
-async def mint_nft(account_id, key):
+async def mint_nft(account_id, key, proxy):
     """
     Mint NFT on NFTS2ME
     ______________________________________________________
     contracts - list NFT contract addresses
     """
 
-    contracts = [""]
+    contracts = [
+        "0x4402279935437aa266ef3e1cddc32480e1f92a6c",#Splender
+                 ] 
 
-    minter = Minter(account_id, key)
+    minter = Minter(account_id, key, proxy)
     await minter.mint_nft(contracts)
 
 
-async def mint_zkstars(account_id, key):
+async def mint_zkstars(account_id, key, proxy):
     """
     Mint ZkStars NFT
     """
@@ -390,11 +421,11 @@ async def mint_zkstars(account_id, key):
     sleep_from = 5
     sleep_to = 10
 
-    zkkstars = ZkStars(account_id, key)
+    zkkstars = ZkStars(account_id, key, proxy)
     await zkkstars.mint(contracts, mint_min, mint_max, mint_all, sleep_from, sleep_to)
 
 
-async def swap_tokens(account_id, key):
+async def swap_tokens(account_id, key, proxy):
     """
     SwapTokens module: Automatically swap tokens to ETH
     ______________________________________________________
@@ -402,7 +433,7 @@ async def swap_tokens(account_id, key):
     """
 
     use_dex = [
-        "syncswap", "skydrome", "zebra"
+        "syncswap", "skydrome", "zebra", "spacefi"
     ]
 
     use_tokens = ["USDC"]
@@ -415,11 +446,11 @@ async def swap_tokens(account_id, key):
     min_percent = 100
     max_percent = 100
 
-    swap_tokens = SwapTokens(account_id, key)
+    swap_tokens = SwapTokens(account_id, key, proxy)
     await swap_tokens.swap(use_dex, use_tokens, sleep_from, sleep_to, slippage, min_percent, max_percent)
 
 
-async def swap_multiswap(account_id, key):
+async def swap_multiswap(account_id, key, proxy):
     """
     Multi-Swap module: Automatically performs the specified number of swaps in one of the dexes.
     ______________________________________________________
@@ -430,10 +461,10 @@ async def swap_multiswap(account_id, key):
     If False the swap path will be [ETH -> USDC -> ETH -> USDC]
     """
 
-    use_dex = ["syncswap", "skydrome", "zebra"]
+    use_dex = ["syncswap", "skydrome", "zebra", "spacefi"]
 
-    min_swap = 3
-    max_swap = 4
+    min_swap = 2
+    max_swap = 2
 
     sleep_from = 3
     sleep_to = 7
@@ -442,16 +473,16 @@ async def swap_multiswap(account_id, key):
 
     random_swap_token = True
 
-    min_percent = 5
-    max_percent = 10
+    min_percent = 10
+    max_percent = 30
 
-    multi = Multiswap(account_id, key)
+    multi = Multiswap(account_id, key, proxy)
     await multi.swap(
         use_dex, sleep_from, sleep_to, min_swap, max_swap, slippage, random_swap_token, min_percent, max_percent
     )
 
 
-async def custom_routes(account_id, key):
+async def custom_routes(account_id, key, proxy):
     """
     BRIDGE:
         – deposit_scroll
@@ -494,9 +525,11 @@ async def custom_routes(account_id, key):
     """
 
     use_modules = [
-        create_omnisea,
-        [create_omnisea, mint_zerius, None],
-        (create_omnisea, 1, 3),
+        [create_omnisea,
+        [mint_zkstars, mint_zerius, mint_nft, None],
+        [send_mail,deposit_layerbank,deposit_rocketsam],
+        ],
+        swap_multiswap,swap_tokens
     ]
 
     sleep_from = 300
@@ -504,7 +537,7 @@ async def custom_routes(account_id, key):
 
     random_module = True
 
-    routes = Routes(account_id, key)
+    routes = Routes(account_id, key, proxy)
     await routes.start(use_modules, sleep_from, sleep_to, random_module)
 
 
@@ -512,32 +545,32 @@ async def custom_routes(account_id, key):
 ########### NO NEED TO CHANGE ###########
 #########################################
 
-async def withdraw_layerbank(account_id, key):
-    layerbank = LayerBank(account_id, key)
+async def withdraw_layerbank(account_id, key, proxy):
+    layerbank = LayerBank(account_id, key, proxy)
     await layerbank.withdraw()
 
 
-async def send_mail(account_id, key):
-    dmail = Dmail(account_id, key)
+async def send_mail(account_id, key, proxy):
+    dmail = Dmail(account_id, key, proxy)
     await dmail.send_mail()
 
 
-async def create_omnisea(account_id, key):
-    omnisea = Omnisea(account_id, key)
+async def create_omnisea(account_id, key, proxy):
+    omnisea = Omnisea(account_id, key, proxy)
     await omnisea.create()
 
 
-async def create_safe(account_id, key):
-    gnosis_safe = GnosisSafe(account_id, key)
+async def create_safe(account_id, key, proxy):
+    gnosis_safe = GnosisSafe(account_id, key, proxy)
     await gnosis_safe.create_safe()
 
 
-async def deploy_contract(account_id, key):
-    deployer = Deployer(account_id, key)
+async def deploy_contract(account_id, key, proxy):
+    deployer = Deployer(account_id, key, proxy)
     await deployer.deploy_token()
 
-async def nft_origins(account_id, key):
-    nft = NftOrigins(account_id, key)
+async def nft_origins(account_id, key, proxy):
+    nft = NftOrigins(account_id, key, proxy)
     await nft.mint()
 
 

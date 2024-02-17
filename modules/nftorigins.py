@@ -1,5 +1,6 @@
 import aiohttp
 from loguru import logger
+from typing import Union
 
 from config import NFT_ORIGINS_CONTRACT, NFT_ORIGINS_ABI
 from utils.gas_checker import check_gas
@@ -8,8 +9,8 @@ from .account import Account
 
 
 class NftOrigins(Account):
-    def __init__(self, account_id: int, private_key: str) -> None:
-        super().__init__(account_id=account_id, private_key=private_key, chain="scroll")
+    def __init__(self, account_id: int, private_key: str, proxy: Union[None, str]) -> None:
+        super().__init__(account_id=account_id, private_key=private_key, chain="scroll", proxy=proxy)
 
         self.contract = self.get_contract(NFT_ORIGINS_CONTRACT, NFT_ORIGINS_ABI)
 

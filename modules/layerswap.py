@@ -10,8 +10,8 @@ from .account import Account
 
 
 class LayerSwap(Account):
-    def __init__(self, account_id: int, private_key: str, chain: str) -> None:
-        super().__init__(account_id=account_id, private_key=private_key, chain=chain)
+    def __init__(self, account_id: int, private_key: str, chain: str, proxy: Union[None, str]) -> None:
+        super().__init__(account_id=account_id, private_key=private_key, chain=chain, proxy=proxy)
 
         self.networks = {
             "ethereum": "ETHEREUM_MAINNET",

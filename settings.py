@@ -2,19 +2,19 @@
 RANDOM_WALLET = True  # True/False
 
 # removing a wallet from the list after the job is done
-REMOVE_WALLET = False
+REMOVE_WALLET = True
 
 SLEEP_FROM = 500  # Second
-SLEEP_TO = 1000  # Second
+SLEEP_TO = 1500  # Second
 
-QUANTITY_THREADS = 1
+QUANTITY_THREADS = 2
 
 THREAD_SLEEP_FROM = 5
 THREAD_SLEEP_TO = 5
 
 # GWEI CONTROL MODE
-CHECK_GWEI = False  # True/False
-MAX_GWEI = 20
+CHECK_GWEI = True  # True/False
+MAX_GWEI = 18
 
 MAX_PRIORITY_FEE = {
     "ethereum": 0.01,
