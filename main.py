@@ -7,7 +7,7 @@ import questionary
 from loguru import logger
 from questionary import Choice
 
-from config import ACCOUNTS
+from config import ACCOUNTS, PROXIES
 from settings import (
     RANDOM_WALLET,
     SLEEP_TO,
@@ -34,23 +34,24 @@ def get_module():
             Choice("7) Swap on Skydrome", swap_skydrome),
             Choice("8) Swap on Zebra", swap_zebra),
             Choice("9) Swap on SyncSwap", swap_syncswap),
-            Choice("10) Deposit LayerBank", deposit_layerbank),
-            Choice("11) Withdraw LayerBank", withdraw_layerbank),
-            Choice("12) Deposit RocketSam", deposit_rocketsam),
-            Choice("13) Withdraw RocketSam", withdraw_rocketsam),
-            Choice("14) Mint and Bridge Zerius NFT", mint_zerius),
-            Choice("15) Mint ZkStars NFT", mint_zkstars),
-            Choice("16) Create NFT collection on Omnisea", create_omnisea),
-            Choice("17) Mint NFT on NFTS2ME", mint_nft),
-            Choice("18) Mint Scroll Origins NFT", nft_origins),
-            Choice("19) Dmail send email", send_mail),
-            Choice("20) Create gnosis safe", create_safe),
-            Choice("21) Deploy contract", deploy_contract),
-            Choice("22) Swap tokens to ETH", swap_tokens),
-            Choice("23) Use Multiswap", swap_multiswap),
-            Choice("24) Use custom routes", custom_routes),
-            Choice("25) Check transaction count", "tx_checker"),
-            Choice("26) Exit", "exit"),
+            Choice("10) Swap on Space.fi", swap_spacefi),
+            Choice("11) Deposit LayerBank", deposit_layerbank),
+            Choice("12) Withdraw LayerBank", withdraw_layerbank),
+            Choice("13) Deposit RocketSam", deposit_rocketsam),
+            Choice("14) Withdraw RocketSam", withdraw_rocketsam),
+            Choice("15) Mint and Bridge Zerius NFT", mint_zerius),
+            Choice("16) Mint ZkStars NFT", mint_zkstars),
+            Choice("17) Create NFT collection on Omnisea", create_omnisea),
+            Choice("18) Mint NFT on NFTS2ME", mint_nft),
+            Choice("19) Mint Scroll Origins NFT", nft_origins),
+            Choice("20) Dmail send email", send_mail),
+            Choice("21) Create gnosis safe", create_safe),
+            Choice("22) Deploy contract", deploy_contract),
+            Choice("23) Swap tokens to ETH", swap_tokens),
+            Choice("24) Use Multiswap", swap_multiswap),
+            Choice("25) Use custom routes", custom_routes),
+            Choice("26) Check transaction count", "tx_checker"),
+            Choice("27) Exit", "exit"),
         ],
         qmark="⚙️ ",
         pointer="✅ "
@@ -63,19 +64,21 @@ def get_module():
 
 
 def get_wallets():
+    account_with_proxy = dict(zip(ACCOUNTS, PROXIES))
     wallets = [
         {
             "id": _id,
             "key": key,
-        } for _id, key in enumerate(ACCOUNTS, start=1)
+            "proxy": account_with_proxy[key]
+        } for _id, key in enumerate(account_with_proxy, start=1)
     ]
 
     return wallets
 
 
-async def run_module(module, account_id, key):
+async def run_module(module, account_id, key, proxy):
     try:
-        await module(account_id, key)
+        await module(account_id, key, proxy)
     except Exception as e:
         logger.error(e)
 
@@ -85,8 +88,8 @@ async def run_module(module, account_id, key):
     await sleep(SLEEP_FROM, SLEEP_TO)
 
 
-def _async_run_module(module, account_id, key):
-    asyncio.run(run_module(module, account_id, key))
+def _async_run_module(module, account_id, key, proxy):
+    asyncio.run(run_module(module, account_id, key, proxy))
 
 
 def main(module):
@@ -102,6 +105,7 @@ def main(module):
                 module,
                 account.get("id"),
                 account.get("key"),
+                account.get("proxy")
             )
             time.sleep(random.randint(THREAD_SLEEP_FROM, THREAD_SLEEP_TO))
 

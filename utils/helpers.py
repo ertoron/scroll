@@ -22,7 +22,25 @@ def remove_wallet(private_key: str):
     with open("accounts.txt", "r") as file:
         lines = file.readlines()
 
+    line_index = 0
+    for line in lines:
+        if private_key in line:
+            break
+        else: 
+            line_index += 1
+
     with open("accounts.txt", "w") as file:
         for line in lines:
             if private_key not in line:
                 file.write(line)
+
+    with open("proxy.txt", "r") as file:
+        lines = file.readlines()
+
+    index = 0
+    with open("proxy.txt", "w") as file:
+        for line in lines:
+            if index != line_index:
+                file.write(line)
+            index += 1
+
